@@ -22,13 +22,8 @@ registros = data_cur.fetchall()
 # Cerrar la conexión a BD
 conn.close()
 
-# Preparar el archivo a utilizar
-archivo_final = open(nombre_archivo, "w", encoding='utf-8')
-
-# Convertir el dato de la BD a texto, reemplazar \n por salto de línea 
-# y poner todo en minúsculas para facilitar el reemplazo de palabras
-for linea in registros:
-    archivo_final.write(str(linea[0]).replace("\\n", ""))
-
-# Cerrar el archivo    
-archivo_final.close()
+with open(nombre_archivo, "w", encoding='utf-8') as archivo_final:
+    # Convertir el dato de la BD a texto, reemplazar \n por salto de línea 
+    # y poner todo en minúsculas para facilitar el reemplazo de palabras
+    for linea in registros:
+        archivo_final.write(str(linea[0]).replace("\\n", ""))

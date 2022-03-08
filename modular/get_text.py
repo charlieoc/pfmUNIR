@@ -12,7 +12,7 @@ file_path = file_env.DIR
 fecha = '20210910'
 
 ## Create file name with date and the rest of the name
-filename = fecha + '_ConferenciaMatutina.txt'
+filename = f'{fecha}_ConferenciaMatutina.txt'
 
 ## File to read
 open_file = path.join(file_path, filename)
@@ -20,17 +20,22 @@ open_file = path.join(file_path, filename)
 with open(open_file, 'r', encoding='utf8') as f:
     lineas = f.readlines()    
 
-new_file = 'archivos/arch_' + fecha + '.txt'
+new_file = f'archivos/arch_{fecha}.txt'
 
 parentesis = ['Inaudible', 'inaudible']
 
 with open(new_file, 'w') as file:
     for linea in lineas[1:]:
-        if linea.find(':') > 0:
-            if linea[:linea.find(':')].isupper():
-                linea = linea.replace(linea[:linea.find(':')+1],'')
-        if linea.find("(") >= 0 and linea.find(")") >= 0:
-            if linea[linea.find("("):linea.find(")")].isupper() or linea[linea.find("(")+1:linea.find(")")] in parentesis:
-                linea = linea.replace(linea[linea.find("("):linea.find(")")+1], '')
+        if linea.find(':') > 0 and linea[: linea.find(':')].isupper():
+            linea = linea.replace(linea[:linea.find(':')+1],'')
+        if (
+            linea.find("(") >= 0
+            and linea.find(")") >= 0
+            and (
+                linea[linea.find("(") : linea.find(")")].isupper()
+                or linea[linea.find("(") + 1 : linea.find(")")] in parentesis
+            )
+        ):
+            linea = linea.replace(linea[linea.find("("):linea.find(")")+1], '')
         if not linea.isspace():
             file.write(linea)
