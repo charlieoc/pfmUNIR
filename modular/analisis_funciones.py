@@ -28,17 +28,23 @@ def fecha_proceso():
 
 def elimina_nombres(open_file, fecha):
     with open(open_file, 'r', encoding='utf8') as f:
-        lineas = f.readlines()    
+        lineas = f.readlines()
     new_file = 'archivos/arch_temp_' + fecha + '.txt'
     parentesis = ['Inaudible', 'inaudible']
     with open(new_file, 'w') as file:
         for linea in lineas[1:]:
-            if linea.find(':') > 0:
-                if linea[:linea.find(':')].isupper():
-                    linea = linea.replace(linea[:linea.find(':')+1],'')
-            if linea.find("(") >= 0 and linea.find(")") >= 0:
-                if linea[linea.find("("):linea.find(")")].isupper() or linea[linea.find("(")+1:linea.find(")")] in parentesis:
-                    linea = linea.replace(linea[linea.find("("):linea.find(")")+1], '')
+            if linea.find(':') > 0 and linea[: linea.find(':')].isupper():
+                linea = linea.replace(linea[:linea.find(':')+1],'')
+            if (
+                linea.find("(") >= 0
+                and linea.find(")") >= 0
+                and (
+                    linea[linea.find("(") : linea.find(")")].isupper()
+                    or linea[linea.find("(") + 1 : linea.find(")")]
+                    in parentesis
+                )
+            ):
+                linea = linea.replace(linea[linea.find("("):linea.find(")")+1], '')
             if not linea.isspace():
                 file.write(linea)
     return new_file
